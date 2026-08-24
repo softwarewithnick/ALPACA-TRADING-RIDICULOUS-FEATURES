@@ -1,3 +1,18 @@
+# ---------------------------------------------------------------- #
+# FILE:     ford-recalls.py
+# PURPOSE:  Scrape Ford recall severity, reason, date
+#
+# AUTHOR:   Nick Amato (@softwarewithnick)
+# CREATED:  2026-08-24
+# MODIFIED: 2026-08-24
+#
+# NOTES:    -
+# ---------------------------------------------------------------- #
+
+
+
+
+
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
@@ -16,6 +31,9 @@ for i in range(1966, 2027):
     subjects = soup.find_all('div', class_ = "subject svelte-18kr9ml")
     components = soup.find_all('span', class_ = "component svelte-18kr9ml")
     dates = soup.find_all('span', class_="date")
+
+
+    
 
     # create a pd series of desired info
     severities = pd.Series([x.text for x in severities])
@@ -40,8 +58,9 @@ comb_df.head()
 comb_df.describe()
 comb_df.dtypes  
 
-
+# re-format dates
 comb_df['date'] = pd.to_datetime(comb_df['date'], format="%b %d, %Y")
 
+# save to .csv
 comb_df.to_csv('data/ford-recalls.csv', index = False)
 
